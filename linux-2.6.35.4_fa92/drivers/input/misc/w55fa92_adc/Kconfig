@@ -1,0 +1,53 @@
+config INPUT_W55FA92_ADC
+	bool "N9H2x/N329xx/W55FA92 Input ADC Function"
+	depends on CPU_W55FA92
+	help
+	  If unsure, say N (but it's safe to say "Y").
+
+config DOORBELL_DB_PINCODE
+	bool "Switch pin code for doorbell demo board"
+	default n
+	depends on INPUT_W55FA92_ADC
+	help
+	  Default is 'N'.
+
+config BATTERY_DETECTION
+	bool "Support battery detection"
+	default y
+	depends on INPUT_W55FA92_ADC
+	---help---
+	  Say Y here if you need voltage detection. 
+
+menu "Battery Channel Select"
+	depends on BATTERY_DETECTION
+config BATTERY_CHANNEL_1
+        bool "Battery detection from channel 1"
+config BATTERY_CHANNEL_2
+        bool "Battery detection from channel 2"
+config BATTERY_CHANNEL_3
+        bool "Battery detection from channel 3"
+config BATTERY_CHANNEL_4
+        bool "Battery detection from channel 4"
+config BATTERY_CHANNEL_5
+        bool "Battery detection from channel 5"
+config BATTERY_CHANNEL_6
+        bool "Battery detection from channel 6"
+config BATTERY_CHANNEL_7
+        bool "Battery detection from channel 7"
+endmenu
+
+config KEYPAD_DETECTION
+	bool "Support analog key pad"
+	default y
+	depends on !BATTERY_CHANNEL_2
+	---help---
+	  Say Y here if you need key pad input. keypad detection will always use channel 2.  
+
+
+config TOUCH_DETECTION
+	bool "Support touch pannel"
+	default y
+	depends on !(BATTERY_CHANNEL_4 || BATTERY_CHANNEL_5 || BATTERY_CHANNEL_6 || BATTERY_CHANNEL_7)
+	---help---
+	  Say Y here if you need touch pannel. 
+

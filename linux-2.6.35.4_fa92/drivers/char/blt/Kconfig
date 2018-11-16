@@ -1,0 +1,5 @@
+config  W55FA92_BLT
+	tristate "Nuvoton N9H2x/N329xx/W55FA92 BLT Device Driver"
+	depends on ARCH_W55FA92
+	help
+		Enable BLT or not.

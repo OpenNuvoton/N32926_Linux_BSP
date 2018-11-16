@@ -1,0 +1,7 @@
+config CRYPTO_DEV_W55FA92_AES
+	tristate "N9H2x/N329xx/W55FA92 AES H/W accelerator"
+	depends on ARCH_W55FA92
+	select CRYPTO_ALGAPI
+	select CRYPTO_BLKCIPHER
+	help
+		Enable Nuvoton N9H2x/N329xx/W55FA92 AES H/W accelerator

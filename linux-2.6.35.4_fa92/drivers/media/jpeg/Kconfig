@@ -1,0 +1,13 @@
+#
+# HW jpeg codec configuration
+#
+
+
+menu "HW jpeg codec"
+	depends on VIDEO_DEV
+
+comment "Hardware jpeg codec"
+
+source "drivers/media/jpeg/w55fa92/Kconfig"
+
+endmenu # w55fa92 hw jpeg codec

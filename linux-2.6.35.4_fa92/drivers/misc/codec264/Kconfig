@@ -1,0 +1,228 @@
+config W55FA92_VDE
+	bool "N9H2x/N329xx/W55FA92 H.264 Codec support"
+	depends on ARCH_W55FA92
+	---help---
+	  Say Y here if you wnat to use N9H2x/N329xx/W55FA92's H.264 Codec Decoder.
+	  
+choice
+    prompt "Enabled Codec Driver"
+    default ENABLE_CODEC_BOTH
+	depends on  W55FA92_VDE
+	
+config ENABLE_DECODER_ONLY
+        bool "H.264 Decoder Only"
+
+config ENABLE_ENCODER_ONLY
+        bool "H.264 Encoder Only"
+        
+config ENABLE_CODEC_BOTH
+        bool "H.264 Decoder / Encoder Both"	  
+endchoice        
+
+
+config W55FA92_AVC_ENCODER_NUM
+	int "Max Encoder Instance (min.=1 and max.=2)"
+	depends on (ENABLE_ENCODER_ONLY || ENABLE_CODEC_BOTH)
+	range 1 2
+	default "2"
+	
+choice
+    prompt "Encode Instance 1 Max Frame Size"
+    default E1_MAX_RESOLUTION_720P
+	depends on  (ENABLE_ENCODER_ONLY || ENABLE_CODEC_BOTH)
+	
+config E1_MAX_RESOLUTION_QVGA
+        bool "320 x 240(QVGA)"
+        	
+config E1_MAX_RESOLUTION_WQVGA
+        bool "480 x 272(WQVGA)"
+
+config E1_MAX_RESOLUTION_VGA
+        bool "640 x 480(VGA)"
+
+config E1_MAX_RESOLUTION_WVGA
+        bool "800 x 480(WVGA)"
+        
+config E1_MAX_RESOLUTION_SVGA
+        bool "800 x 608(SVGA)"
+
+config E1_MAX_RESOLUTION_D1
+        bool "720 x 480(D1)"
+
+config E1_MAX_RESOLUTION_720P
+        bool "1280 x 720(720P)"
+        
+config E1_MAX_RESOLUTION_1080P
+        bool "1920 x 1072(1080P)"        
+endchoice	
+
+choice
+    prompt "Encode Instance 2 Max Frame Size"
+    default E2_MAX_RESOLUTION_720P
+	depends on  ((ENABLE_ENCODER_ONLY || ENABLE_CODEC_BOTH) && (W55FA92_AVC_ENCODER_NUM>=2))
+	
+config E2_MAX_RESOLUTION_QVGA
+        bool "320 x 240(QVGA)"
+        	
+config E2_MAX_RESOLUTION_WQVGA
+        bool "480 x 272(WQVGA)"
+
+config E2_MAX_RESOLUTION_VGA
+        bool "640 x 480(VGA)"
+
+config E2_MAX_RESOLUTION_WVGA
+        bool "800 x 480(WVGA)"
+        
+config E2_MAX_RESOLUTION_SVGA
+        bool "800 x 608(SVGA)"
+
+config E2_MAX_RESOLUTION_D1
+        bool "720 x 480(D1)"
+
+config E2_MAX_RESOLUTION_720P
+        bool "1280 x 720(720P)"
+        
+config E2_MAX_RESOLUTION_1080P
+        bool "1920 x 1072(1080P)"        
+endchoice	
+	
+config ENCODE_VUI
+	bool "Encode VUI in H.264 bitstream"
+	default y
+	depends on  (ENABLE_ENCODER_ONLY || ENABLE_CODEC_BOTH)
+	---help---
+	  Say Y here if you want to encode VUI in h264 bitstream. 	
+	
+config W55FA92_AVC_FRAME_NUM
+	int "Max Decode Reference Frame Num (min.=1 and max.=16)"
+	depends on (ENABLE_DECODER_ONLY || ENABLE_CODEC_BOTH)
+	range 1 16
+	default "1"
+
+	
+config W55FA92_AVC_DECODER_NUM
+	int "Max Decoder Instance (min.=1 and max.=4)"
+	depends on (ENABLE_DECODER_ONLY || ENABLE_CODEC_BOTH)
+	range 1 4
+	default "1"		
+	
+choice
+    prompt "Decode Instance 1 Max Frame Size"
+    default D1_MAX_RESOLUTION_720P
+	depends on  (ENABLE_DECODER_ONLY || ENABLE_CODEC_BOTH)
+	
+config D1_MAX_RESOLUTION_QVGA
+        bool "320 x 240(QVGA)"
+        	
+config D1_MAX_RESOLUTION_WQVGA
+        bool "480 x 272(WQVGA)"
+
+config D1_MAX_RESOLUTION_VGA
+        bool "640 x 480(VGA)"
+
+config D1_MAX_RESOLUTION_WVGA
+        bool "800 x 480(WVGA)"
+        
+config D1_MAX_RESOLUTION_SVGA
+        bool "800 x 608(SVGA)"
+
+config D1_MAX_RESOLUTION_D1
+        bool "720 x 480(D1)"
+
+config D1_MAX_RESOLUTION_720P
+        bool "1280 x 720(720P)"
+        
+config D1_MAX_RESOLUTION_1080P
+        bool "1920 x 1072(1080P)"        
+endchoice	
+
+choice
+    prompt "Decode Instance 2 Max Frame Size"
+    default D2_MAX_RESOLUTION_720P
+	depends on  ((ENABLE_DECODER_ONLY || ENABLE_CODEC_BOTH) && ((W55FA92_AVC_DECODER_NUM = 2) || (W55FA92_AVC_DECODER_NUM = 3) || (W55FA92_AVC_DECODER_NUM = 4)))
+
+config D2_MAX_RESOLUTION_QVGA
+        bool "320 x 240(QVGA)"
+	
+config D2_MAX_RESOLUTION_WQVGA
+        bool "480 x 272(WQVGA)"
+
+config D2_MAX_RESOLUTION_VGA
+        bool "640 x 480(VGA)"
+
+config D2_MAX_RESOLUTION_WVGA
+        bool "800 x 480(WVGA)"
+        
+config D2_MAX_RESOLUTION_SVGA
+        bool "800 x 608(SVGA)"
+
+config D2_MAX_RESOLUTION_D1
+        bool "720 x 480(D1)"
+
+config D2_MAX_RESOLUTION_720P
+        bool "1280 x 720(720P)"
+        
+config D2_MAX_RESOLUTION_1080P
+        bool "1920 x 1072(1080P)"        
+endchoice	
+
+choice
+    prompt "Decode Instance 3 Max Frame Size"
+    default D3_MAX_RESOLUTION_720P
+	depends on  ((ENABLE_DECODER_ONLY || ENABLE_CODEC_BOTH) && ((W55FA92_AVC_DECODER_NUM = 3) || (W55FA92_AVC_DECODER_NUM = 4)))
+	
+config D3_MAX_RESOLUTION_QVGA
+        bool "320 x 240(QVGA)"
+        	
+config D3_MAX_RESOLUTION_WQVGA
+        bool "480 x 272(WQVGA)"
+
+config D3_MAX_RESOLUTION_VGA
+        bool "640 x 480(VGA)"
+
+config D3_MAX_RESOLUTION_WVGA
+        bool "800 x 480(WVGA)"
+        
+config D3_MAX_RESOLUTION_SVGA
+        bool "800 x 608(SVGA)"
+
+config D3_MAX_RESOLUTION_D1
+        bool "720 x 480(D1)"
+
+config D3_MAX_RESOLUTION_720P
+        bool "1280 x 720(720P)"
+        
+config D3_MAX_RESOLUTION_1080P
+        bool "1920 x 1072(1080P)"        
+endchoice	
+
+choice
+    prompt "Decode Instance 4 Max Frame Size"
+    default D4_MAX_RESOLUTION_720P
+	depends on  ((ENABLE_DECODER_ONLY || ENABLE_CODEC_BOTH) && (W55FA92_AVC_DECODER_NUM>=4))
+
+config D4_MAX_RESOLUTION_QVGA
+        bool "320 x 240(QVGA)"	
+	
+config D4_MAX_RESOLUTION_WQVGA
+        bool "480 x 272(WQVGA)"
+
+config D4_MAX_RESOLUTION_VGA
+        bool "640 x 480(VGA)"
+
+config D4_MAX_RESOLUTION_WVGA
+        bool "800 x 480(WVGA)"
+        
+config D4_MAX_RESOLUTION_SVGA
+        bool "800 x 608(SVGA)"
+
+config D4_MAX_RESOLUTION_D1
+        bool "720 x 480(D1)"
+
+config D4_MAX_RESOLUTION_720P
+        bool "1280 x 720(720P)"
+        
+config D4_MAX_RESOLUTION_1080P
+        bool "1920 x 1072(1080P)"        
+endchoice	
+       

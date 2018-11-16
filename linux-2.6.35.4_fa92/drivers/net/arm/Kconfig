@@ -1,0 +1,145 @@
+#
+# Acorn Network device configuration
+#  These are for Acorn's Expansion card network interfaces
+#
+config ARM_AM79C961A
+	bool "ARM EBSA110 AM79C961A support"
+	depends on ARM && ARCH_EBSA110
+	select CRC32
+	help
+	  If you wish to compile a kernel for the EBSA-110, then you should
+	  always answer Y to this.
+
+config ARM_ETHER1
+	tristate "Acorn Ether1 support"
+	depends on ARM && ARCH_ACORN
+	help
+	  If you have an Acorn system with one of these (AKA25) network cards,
+	  you should say Y to this option if you wish to use it with Linux.
+
+config ARM_ETHER3
+	tristate "Acorn/ANT Ether3 support"
+	depends on ARM && ARCH_ACORN
+	help
+	  If you have an Acorn system with one of these network cards, you
+	  should say Y to this option if you wish to use it with Linux.
+
+config ARM_ETHERH
+	tristate "I-cubed EtherH/ANT EtherM support"
+	depends on ARM && ARCH_ACORN
+	select CRC32
+	help
+	  If you have an Acorn system with one of these network cards, you
+	  should say Y to this option if you wish to use it with Linux.
+
+config ARM_AT91_ETHER
+	tristate "AT91RM9200 Ethernet support"
+	depends on ARM && ARCH_AT91RM9200
+	select MII
+	help
+	  If you wish to compile a kernel for the AT91RM9200 and enable
+	  ethernet support, then you should always answer Y to this.
+
+config ARM_KS8695_ETHER
+	tristate "KS8695 Ethernet support"
+	depends on ARM && ARCH_KS8695
+	select MII
+	help
+	  If you wish to compile a kernel for the KS8695 and want to
+	  use the internal ethernet then you should answer Y to this.
+
+config EP93XX_ETH
+	tristate "EP93xx Ethernet support"
+	depends on ARM && ARCH_EP93XX
+	select MII
+	help
+	  This is a driver for the ethernet hardware included in EP93xx CPUs.
+	  Say Y if you are building a kernel for EP93xx based devices.
+
+config IXP4XX_ETH
+	tristate "Intel IXP4xx Ethernet support"
+	depends on ARM && ARCH_IXP4XX && IXP4XX_NPE && IXP4XX_QMGR
+	select PHYLIB
+	help
+	  Say Y here if you want to use built-in Ethernet ports
+	  on IXP4xx processor.
+
+config W90P910_ETH
+	tristate "Nuvoton w90p910 Ethernet support"
+	depends on ARM && ARCH_W90X900
+	select PHYLIB
+	select MII
+	help
+	  Say Y here if you want to use built-in Ethernet ports
+	  on w90p910 processor.
+
+config W55FA92_ETH
+	bool "Nuvoton N9H2x/N329xx/w55fa92 Ethernet support"
+	depends on ARM && ARCH_W55FA92
+	select PHYLIB
+	select MII
+	help
+	  Say Y here if you want to use built-in Ethernet ports
+	  on N9H2x/N329xx/W55FA92 processor.
+choice
+	prompt "Ethernet port select"
+		default W55FA92_ETH_PORT0
+		depends on W55FA92_ETH
+
+config W55FA92_ETH_PORT0
+	bool "N9H2x/N329xx/W55FA92 Ethernet 1st Port"
+
+config W55FA92_ETH_PORT1
+	bool "N9H2x/N329xx/W55FA92 Ethernet 2nd Port"
+endchoice
+
+choice
+	prompt "Ethernet phy select"
+		default W55FA92_ETH_PHY_RTL8201
+		depends on W55FA92_ETH
+		
+config W55FA92_ETH_PHY_RTL8201
+	bool "RTL8201 PHY"
+	depends on W55FA92_ETH
+	help
+	  Say Y here if you want to use RTL8201 PHY
+          on N9H2x/N329xx/W55FA92 processor.
+
+config W55FA92_ETH_PHY_SR8201G
+	bool "SR8201G PHY"
+	depends on W55FA92_ETH
+	help
+	  Say Y here if you want to use SR8201G PHY
+          on N9H2x/N329xx/W55FA92 processor.
+
+config W55FA92_ETH_PHY_NO_ASSIGN
+	bool "Not assign specific PHY"
+	depends on W55FA92_ETH
+	help
+	  Say Y here if you want to assign general PHY
+          on N9H2x/N329xx/W55FA92 processor.		  
+		  
+endchoice
+
+config W55FA92_ETH_MII_PHY_ID
+	int "PHY ID address for MII target"
+	default -1
+	depends on W55FA92_ETH
+	help
+	  Assign external phy id 0 ~ 3
+          based on your PHY circuit,
+          if assign -1, it will adopt driver's hard code ID.
+
+config W55FA92_ETH_REFCLK_REVERSE
+	bool "REVERSE EMAC REF_CLK"
+	depends on W55FA92_ETH
+	help
+	  Say Y here if you want reverse EMC REF CLK
+          on N9H2x/N329xx/W55FA92 processor.
+
+config W55FA92_WAKE_ON_LAN
+	bool "WOL Wake On Lan"
+	depends on W55FA92_ETH
+	help
+	  Say Y here if you want support WOL
+          on N9H2x/N329xx/W55FA92 processor.

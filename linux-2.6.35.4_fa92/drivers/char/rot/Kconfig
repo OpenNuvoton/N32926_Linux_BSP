@@ -1,0 +1,26 @@
+config W55FA92_ROT
+	bool "N9H2x/N329xx/W55FA92 Rotation Engine support"
+	depends on ARCH_W55FA92
+	---help---
+	  Say Y here if you wnat to use N9H2x/N329xx/W55FA92's Rotation Engine
+
+config ROTATION_WIDTH
+        int "Rotation max. width for buffer allocation"
+        default 800
+        depends on W55FA92_ROT
+        help
+          Default is 800
+
+config ROTATION_HEIGHT
+        int "Rotation max. height for buffer allocation"
+        default 480
+        depends on W55FA92_ROT
+        help
+          Default is 480
+
+config ROTATION_PIXEL_WIDTH
+        int "RGB565/YUV422 should 2. XRGB888 should be 4"
+        default 2
+        depends on W55FA92_ROT
+        help
+          Default is 2

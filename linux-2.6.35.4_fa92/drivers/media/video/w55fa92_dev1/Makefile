@@ -1,0 +1,38 @@
+obj-$(CONFIG_W55FA92_VIDEOIN_DEV1)	+= DevVin1.o
+#obj-$(CONFIG_W55FA92_VIDEOIN_DEV2)	+= DevVin2.o
+obj-$(CONFIG_W55FA92_VIDEOIN_DEV1)	+= videoin.o
+obj-$(CONFIG_W55FA92_VIDEOIN_DEV1)	+= vin_ioctl.o
+#obj-$(CONFIG_W55FA92_VIDEOIN_DEV1)	+= DrvI2C.o
+obj-$(CONFIG_W55FA92_VIDEOIN_DEV1)	+= sensor_ctl.o
+obj-$(CONFIG_W55FA92_VIDEOIN_DEV1)	+= vin_buffer.o
+
+obj-$(CONFIG_SENSOR_NT99340_DEV1)	+= sensor_nt99340.o
+obj-$(CONFIG_SENSOR_NT99140_DEV1)	+= sensor_nt99140.o
+obj-$(CONFIG_SENSOR_NT99141_DEV1)	+= sensor_nt99141.o
+obj-$(CONFIG_SENSOR_XC7021_DEV1)	+= sensor_xc7021.o
+obj-$(CONFIG_SENSOR_NT99142_DEV1)	+= sensor_nt99142.o
+obj-$(CONFIG_SENSOR_NT99050_DEV1)	+= sensor_nt99050.o
+obj-$(CONFIG_SENSOR_NT99160_DEV1)	+= sensor_nt99160.o
+obj-$(CONFIG_SENSOR_NT99252_DEV1)	+= sensor_nt99252.o
+obj-$(CONFIG_SENSOR_NT99240_DEV1)	+= sensor_nt99240.o
+obj-$(CONFIG_SENSOR_HM1375_DEV1)	+= sensor_hm1375.o
+obj-$(CONFIG_SENSOR_HM1055_DEV1)	+= sensor_hm1055.o
+obj-$(CONFIG_SENSOR_SP1628_DEV1)	+= sensor_sp1628.o
+obj-$(CONFIG_SENSOR_TW9912_DEV1)	+= sensor_tw9912.o
+#obj-$(CONFIG_SENSOR_HI702_DEV1)		+= sensor_hi702.o
+obj-$(CONFIG_SENSOR_OV7725_DEV1)	+= sensor.o
+obj-$(CONFIG_SENSOR_OV9660_DEV1)	+= sensor.o
+obj-$(CONFIG_SENSOR_OV7670_DEV1)	+= sensor.o
+obj-$(CONFIG_SENSOR_GC0308_DEV1)	+= sensor_gc0308.o
+obj-$(CONFIG_SENSOR_GC0303_DEV1)	+= sensor_gc0303.o
+obj-$(CONFIG_SENSOR_AVNET_DEV1)	+= sensor_avnet.o
+obj-$(CONFIG_SENSOR_OV10633_DEV1)	+= sensor_ov10633.o
+obj-$(CONFIG_SENSOR_SC1046_DEV1)	+= sensor_sc1046.o
+obj-$(CONFIG_SENSOR_GM7150_DEV1)	+= sensor_gm7150.o
+obj-$(CONFIG_SENSOR_TW9900_DEV1)	+= sensor_tw9900.o
+obj-$(CONFIG_SENSOR_TVP5150_DEV1)	+= sensor_tvp5150.o
+
+
+
+
+

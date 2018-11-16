@@ -1,0 +1,4 @@
+config  CRYPTODEV
+	tristate "CryptoDev for Linux"
+	help
+		Enable CryptoDev for Linux

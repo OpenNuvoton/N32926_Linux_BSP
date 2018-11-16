@@ -1,0 +1,34 @@
+##
+## W55FA9X series ADC audio recording
+##
+
+#config SND_SOC_W55FA92
+#	tristate "W55FA92 Audio Recording Device"
+#	depends on ARCH_W55FA92
+#	help
+#	  This option enables support for ADC recording mode on the W55FA92 SoC.
+
+config SND_SOC_W55FA92_ADC
+	tristate "N9H2x/N329xx/W55FA92 ADC recording for demo board"
+#	depends on SND_SOC_W55FA92
+	select SND_SOC_W55FA92_CODEC_ADC     
+	help
+	  Select this option to enable audio recording from ADC on the
+	  N9H2x/N329xx/W55FA92 demoboard.
+
+choice
+    prompt "Input Type Selection"
+		default ANALOG_MIC
+	depends on SND_SOC_W55FA92_ADC
+  
+		config ANALOG_MIC
+			bool "Analog MIC Input"
+		config MIC_IN_DISABLE_GAIN
+			bool "Line in from MIC path and disable gain"
+		config LINE_IN
+			bool "Line Input"		
+		config DIGITAL_MIC_MONO
+			bool "Digital MIC Mono Input"
+		config DIGITAL_MIC_STEREO
+			bool "Digital MIC Stereo Input"
+endchoice

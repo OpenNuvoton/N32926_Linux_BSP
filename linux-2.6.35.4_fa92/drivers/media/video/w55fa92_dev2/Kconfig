@@ -1,0 +1,343 @@
+config W55FA92_VIDEOIN_DEV2
+	bool "N9H2x/N329xx/W55FA92 video capture port 2 support"
+	depends on ARCH_W55FA92 && VIDEO_DEV
+	---help---
+	  Say Y here if you have N9H2x/N329xx/W55FA92chip(nuvoTon).
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called W55FA92_videoin_dev2.
+
+choice 
+	prompt "Board Select"
+        default DEMO_BOARD_DEV2
+	depends on W55FA92_VIDEOIN_DEV2
+		config  DEV_BOARD_DEV2
+			bool "Developement board port 2"
+		config  DEMO_BOARD_DEV2
+			bool "Demo board port 2"
+		config  VIDEODOOR_BOARD_DEV2
+			bool "Videodoor board port 2"
+endchoice
+
+config VIN_DEV2_ENCODE_WIDTH
+        int "VideoIn DEV2 encode width"
+        default 640
+        depends on W55FA92_VIDEOIN_DEV2
+        help
+          Default is 640
+
+config VIN_DEV2_ENCODE_HEIGHT
+        int "VideoIn DEV2 encode height"
+        default 480
+        depends on W55FA92_VIDEOIN_DEV2
+        help
+          Default is 480
+
+config VIN_DEV2_ENCODE_BUF_NO
+        int "VideoIn DEV2 encode buffer numbers"
+		range 2 3
+        default 3
+        depends on W55FA92_VIDEOIN_DEV2
+        help
+          Specified the encode buffer numbers
+
+config VIN_DEV2_PREVIEW_WIDTH
+        int "VideoIn DEV2 preview width"
+        default 320
+        depends on W55FA92_VIDEOIN_DEV2
+        help
+          Default is 320
+
+config VIN_DEV2_PREVIEW_HEIGHT
+        int "VideoIn DEV2 preview height"
+        default 240
+        depends on W55FA92_VIDEOIN_DEV2
+        help
+          Default is 240
+
+config VIN_DEV2_PREVIEW_BUF_NO
+        int "VideoIn DEV2 preview buffer numbers"
+		range 3 3
+        default 3
+        depends on W55FA92_VIDEOIN_DEV2
+        help
+          Specified the preview buffer numbers
+
+config SUPPORT_SENSOR_RESET_DEV2
+	bool "Support sensor reset pin"
+	default y
+	depends on W55FA92_VIDEOIN_DEV2
+	---help---
+	  Say Y here if you need sensor reset pin. Please refer the circit. 
+
+config SUPPORT_SENSOR_POWER_DOWN_DEV2
+	bool "Support sensor power down pin"
+	default y
+	depends on W55FA92_VIDEOIN_DEV2
+	---help---
+	  Say Y here if you need sensor power down pin. Please refer the circit
+
+config MOTION_DETECTION_DEV2
+	tristate "Support motion detection function"
+	depends on W55FA92_VIDEOIN_DEV2
+	---help---
+	  Say Y here if you wnat to support motion detection function.
+
+config NON_STANDARD_I2C_DEV2
+	tristate "Support non-standard i2c"
+	depends on W55FA92_VIDEOIN_DEV2 && !SHARE_SENSOR
+	---help---
+	  Say Y here if your sensors use same slave address.
+
+choice 
+	prompt "Encode format"
+        default PLANAR_YUV422_YUV420_DEV2
+	depends on W55FA92_VIDEOIN_DEV2
+	
+		config  PLANAR_YUV422_YUV420_DEV2
+			bool "Support planar yuv422/yuv420"
+		config  PLANAR_YUV420_DEV2
+			bool "Support planar yuv420"
+endchoice
+
+choice
+    prompt "Video Sensor support"
+		default SENSOR_OV7725_DEV2
+	depends on W55FA92_VIDEOIN_DEV2
+ 
+		config SENSOR_OV9660_DEV2
+			bool "OV9660 sensor support"
+		config SENSOR_OV7670_DEV2
+			bool "OV7670 sensor support"
+		config SENSOR_OV7725_DEV2
+			bool "OV7725 sensor support"
+		config SENSOR_NT99140_DEV2
+			bool "NT99140 sensor support"
+		config SENSOR_NT99141_DEV2
+			bool "NT99141 sensor support"
+		config SENSOR_NT99142_DEV2
+			bool "NT99142 sensor support"
+		config SENSOR_NT99050_DEV2
+			bool "NT99050 sensor support"
+		config SENSOR_NT99160_DEV2
+			bool "NT99160 sensor support"
+		config SENSOR_NT99340_DEV2
+			bool "NT99340 sensor support"
+		config SENSOR_NT99252_DEV2
+			bool "NT99252 sensor support"
+		config SENSOR_NT99240_DEV2
+			bool "NT99240 sensor support"
+		config SENSOR_HM1375_DEV2
+			bool "HM1375 sensor support"	
+		config SENSOR_HM1055_DEV2
+			bool "HM1055 sensor support"
+		config SENSOR_TW9912_DEV2
+			bool "TW9912 sensor support"
+		config SENSOR_GC0308_DEV2
+			bool "GC0308 sensor support"	
+		config SENSOR_OV10633_DEV2
+			bool "OV10633 sensor support"	
+		config SENSOR_SC1046_DEV2	
+			bool "SC1046 sensor support"	
+		config SENSOR_GM7150_DEV2	
+			bool "GM7150 TV decoder support"	
+		config SENSOR_TW9900_DEV2	
+			bool "TW9900 TV decoder support"	
+		config SENSOR_TVP5150_DEV2	
+			bool "TVP5150 TV decoder support"
+        config SENSOR_XC7021_DEV2
+			bool "XC7021 ISP sensor support"			
+endchoice
+
+choice
+    prompt "AEC/AWB target frame rate selection"
+		default TARGET_25FPS_DEV2
+	depends on SENSOR_NT99141_DEV2 || SENSOR_NT99142_DEV2
+		config TARGET_25FPS_DEV2
+			bool "AEC/AWB target fixed 25fps"
+		config TARGET_23FPS_DEV2
+			bool "AEC/AWB target fixed 23fps"
+		config TARGET_15FPS_DEV2
+			bool "AEC/AWB target 15fps at least"
+		config TARGET_10FPS_DEV2
+			bool "AEC/AWB target 10fps at least"
+endchoice
+
+choice
+    prompt "Raw data sensor selection"
+		default SENSOR_SC2133_DEV2
+	depends on SENSOR_XC7021_DEV2  
+		config SENSOR_SC2033_DEV2
+			bool "SC2033 raw data sensor"
+		config SENSOR_SC2133_DEV2
+			bool "SC2133 raw data sensor"
+		config SENSOR_SC1143_DEV2
+			bool "SC1143 raw data sensor"			
+		config SENSOR_OV2710_DEV2
+			bool "OV2710 raw data sensor"
+		config SENSOR_OV9712_DEV2
+			bool "OV9712 raw data sensor"			
+endchoice
+
+choice
+    prompt "Frame rate selection"
+		default 30_FRAME_DEV2
+	depends on SENSOR_NT99050_DEV2
+		config 30_FRAME_DEV2
+			bool "30 frames/sec"
+		config 60_FRAME_DEV2
+			bool "60 frames/sec"
+endchoice
+
+choice
+    prompt "AEC/AWB target frame rate selection"
+		default SC1046_TARGET_25FPS_DEV2
+	depends on SENSOR_SC1046_DEV2
+		config SC1046_TARGET_25FPS_DEV2
+			bool "AEC/AWB target fixed 25fps"
+		config SC1046_TARGET_20FPS_DEV2
+			bool "AEC/AWB target fixed 20fps"	
+endchoice
+
+choice
+    prompt "NTSC/PAL System selection"
+		default PAL_SYSTEM_DEV2
+	depends on SENSOR_TW9912_DEV2 || SENSOR_GM7150_DEV2 || SENSOR_TW9900_DEV2 || SENSOR_TVP5150_DEV2
+		config PAL_SYSTEM_DEV2
+			bool "PAL system"
+		config NTSC_SYSTEM_DEV2
+			bool "NTSC system"
+endchoice
+
+choice
+    prompt "One field or two fields selection"
+		default ONE_FIELD_DEV2
+	depends on SENSOR_GM7150_DEV2 || SENSOR_TW9900_DEV2 || SENSOR_TVP5150_DEV2
+		config ONE_FIELD_DEV2
+			bool "One field"
+		config TWO_FIELDS_DEV2
+			bool "Two fields"
+endchoice
+
+config PAL_CROP_START_X
+        int "PAL Cropping Start Poistion X"
+        default 47
+        depends on PAL_SYSTEM_DEV2 && SENSOR_TW9912_DEV2
+        help
+          Default is 47 for PAL, 42 for NTSC system
+config PAL_CROP_START_Y
+         int "PAL Cropping Start Poistion Y"
+        default 36
+        depends on PAL_SYSTEM_DEV2 && SENSOR_TW9912_DEV2
+        help
+          Default is 36 for PAL, 37 for NTSC system
+config NTSC_CROP_START_X
+        int "NTSC Cropping Start Poistion X"
+        default 42
+        depends on NTSC_SYSTEM_DEV2 && SENSOR_TW9912_DEV2
+        help
+          Default is 47 for PAL, 42 for NTSC system
+config NTSC_CROP_START_Y
+         int "NTSC Cropping Start Poistion Y"
+        default 37
+        depends on NTSC_SYSTEM_DEV2  && SENSOR_TW9912_DEV2
+        help
+          Default is 36 for PAL, 37 for NTSC system
+
+config PAL_CROP_START_X
+        int "PAL Cropping Start Poistion X"
+        default 76
+        depends on PAL_SYSTEM_DEV2 && SENSOR_GM7150_DEV2
+        help
+          Default is 76 if one filed, 6 if two fields
+config PAL_CROP_START_Y
+         int "PAL Cropping Start Poistion Y"
+        default 12
+        depends on PAL_SYSTEM_DEV2 && SENSOR_GM7150_DEV2
+        help
+          Default is 12 if one filed, 35 if two fields
+config NTSC_CROP_START_X
+        int "NTSC Cropping Start Poistion X"
+        default 76
+        depends on NTSC_SYSTEM_DEV2 && SENSOR_GM7150_DEV2
+        help
+          Default is 76 if one filed, 6 if two fields
+config NTSC_CROP_START_Y
+         int "NTSC Cropping Start Poistion Y"
+        default 12
+        depends on NTSC_SYSTEM_DEV2 && SENSOR_GM7150_DEV2
+        help
+         Default is 12 if one filed, 35 if two fields
+
+config PAL_CROP_START_X
+        int "PAL Cropping Start Poistion X"
+        default 88
+        depends on PAL_SYSTEM_DEV2 && SENSOR_TW9900_DEV2
+        help
+          Default is 88 if one filed, 6 if two fields
+config PAL_CROP_START_Y
+         int "PAL Cropping Start Poistion Y"
+        default 16
+        depends on PAL_SYSTEM_DEV2 && SENSOR_TW9900_DEV2
+        help
+          Default is 16 if one filed, 35 if two fields
+config NTSC_CROP_START_X
+        int "NTSC Cropping Start Poistion X"
+        default 88
+        depends on NTSC_SYSTEM_DEV2 && SENSOR_TW9900_DEV2
+        help
+          Default is 88 if one filed, 6 if two fields
+config NTSC_CROP_START_Y
+         int "NTSC Cropping Start Poistion Y"
+        default 16
+        depends on NTSC_SYSTEM_DEV2 && SENSOR_TW9900_DEV2
+        help
+         Default is 16 if one filed, 35 if two fields
+		 
+config PAL_CROP_START_X
+        int "PAL Cropping Start Poistion X"
+        default 76
+        depends on PAL_SYSTEM_DEV2 && SENSOR_TVP5150_DEV2
+        help
+          Default is 76 if one filed, 6 if two fields
+config PAL_CROP_START_Y
+         int "PAL Cropping Start Poistion Y"
+        default 12
+        depends on PAL_SYSTEM_DEV2 && SENSOR_TVP5150_DEV2
+        help
+          Default is 12 if one filed, 12 if two fields
+config NTSC_CROP_START_X
+        int "NTSC Cropping Start Poistion X"
+        default 76
+        depends on NTSC_SYSTEM_DEV2 && SENSOR_TVP5150_DEV2
+        help
+          Default is 76 if one filed, 6 if two fields
+config NTSC_CROP_START_Y
+         int "NTSC Cropping Start Poistion Y"
+        default 12
+        depends on NTSC_SYSTEM_DEV2 && SENSOR_TVP5150_DEV2
+        help
+         Default is 12 if one filed, 35 if two fields
+		 
+		  
+choice
+    prompt "Video port connection"
+		default VIDEO_PORT2_0_DEV2
+	depends on W55FA92_VIDEOIN_DEV2 && !SHARE_SENSOR
+
+		config VIDEO_PORT2_0_DEV2
+			bool "Data==>GPC port. Control==>GPA/GPE port"
+		config VIDEO_PORT2_1_DEV2
+			bool "Data==>GPG/GPD port. Control==>GPD port"
+endchoice
+choice
+    prompt "Flicker Setting"
+		default FLICKER_60HZ_DEV2
+	depends on W55FA92_VIDEOIN_DEV2  && !SHARE_SENSOR
+  
+		config FLICKER_60HZ_DEV2
+			bool "Flicker setting is 60Hz"
+		config FLICKER_50HZ_DEV2
+			bool "Flicker setting is 50Hz"		
+endchoice
+

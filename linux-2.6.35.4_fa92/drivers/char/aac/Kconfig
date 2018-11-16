@@ -1,0 +1,12 @@
+config  W55FA92_AAC
+	bool "Nuvoton N9H2x/N329xx/W55FA92 AAC Device Driver"
+	depends on ARCH_W55FA92
+	help
+		Enable AAC or not.
+
+config AAC_DRIVER_USE_INTERNAL_SRAM
+	bool "AAC IMDCT/MDCT engine use internal 8K SRAM as in/out DMA buffer"
+	depends on W55FA92_AAC
+	default n
+	---help---
+	  Say Y here if you wnat to use internal 8K SRAM as in/out DMA buffer
