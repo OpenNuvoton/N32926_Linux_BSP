@@ -328,7 +328,7 @@ int fmiSMCheckRB(FMI_SM_INFO_T *pSM)
 int fmiSMCheckStatus(FMI_SM_INFO_T *pSM)
 {
     u32 status, ret;
-    
+
     ret = 0;
     outpw(REG_SMCMD, 0x70);     // Status Read command for NAND flash
     status = inpw(REG_SMDATA);
@@ -344,7 +344,7 @@ int fmiSMCheckStatus(FMI_SM_INFO_T *pSM)
         printk("WARNING: NAND device status: Write Protected!!\n");
         ret = FMI_SM_STATE_ERROR;
     }
-    
+
     return ret;
 }
 
@@ -716,6 +716,18 @@ int fmiSM_ReadID(FMI_SM_INFO_T *pSM, NDISK_T *NDISK_info)
                 pSM->nPageSize = NAND_PAGE_2KB;
                 pSM->bIsNandECC8 = TRUE;
 
+                // 2018/10/29, support MXIC MX30LF2G18AC NAND flash
+                if ((tempID[0]==0xC2)&&(tempID[1]==0xDA)&&(tempID[2]==0x90)&&(tempID[3]==0x95)&&(tempID[4]==0x06))
+                {
+                    // The first ID of this NAND is 0xC2 BUT it is NOT NAND ROM (read only)
+                    // So, we MUST modify the configuration of it
+                    //      1. change pSM->bIsCheckECC to TRUE to enable ECC feature;
+                    //      2. assign a fake vendor_ID to make NVTFAT can write data to this NAND disk.
+                    //         (GNAND will check vendor_ID and set disk to DISK_TYPE_READ_ONLY if it is 0xC2)
+                    pSM->bIsCheckECC = TRUE;
+                    NDISK_info->vendor_ID = 0xFF;   // fake vendor_ID
+                }
+
                 NDISK_info->nPageSize = 2048;
                 break;
 
@@ -778,6 +790,18 @@ int fmiSM_ReadID(FMI_SM_INFO_T *pSM, NDISK_T *NDISK_info)
                 pSM->bIsNandECC8 = TRUE;
 
                 NDISK_info->nPageSize = 2048;
+
+                // 2018/10/29, support MXIC MX30LF4G18AC NAND flash
+                if ((tempID[0]==0xC2)&&(tempID[1]==0xDC)&&(tempID[2]==0x90)&&(tempID[3]==0x95)&&(tempID[4]==0x56))
+                {
+                    // The first ID of this NAND is 0xC2 BUT it is NOT NAND ROM (read only)
+                    // So, we MUST modify the configuration of it
+                    //      1. change pSM->bIsCheckECC to TRUE to enable ECC feature;
+                    //      2. assign a fake vendor_ID to make NVTFAT can write data to this NAND disk.
+                    //         (GNAND will check vendor_ID and set disk to DISK_TYPE_READ_ONLY if it is 0xC2)
+                    pSM->bIsCheckECC = TRUE;
+                    NDISK_info->vendor_ID = 0xFF;   // fake vendor_ID
+                }
                 break;
 
         case 0xd3:  // 1024M
