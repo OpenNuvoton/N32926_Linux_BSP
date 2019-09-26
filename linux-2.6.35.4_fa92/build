@@ -51,6 +51,16 @@ else
 	fi
 fi
 
+if [ `grep -v "^#" .config | grep "CONFIG_USB_STORAGE=m"` ]; then
+	echo "Configure with USB storage"
+	cp -a drivers/usb/storage/usb-storage.ko $ROOTFS/usr
+else
+	echo "Configure without USB storage"
+	if [ -f $ROOTFS/usr/usb-storage.ko ]; then
+		rm -f $ROOTFS/usr/usb-storage.ko
+	fi
+fi
+
 if [ `grep -v "^#" .config | grep "CONFIG_USB_FILE_STORAGE=m"` ]; then
 	echo "Configure with USBD mass storage"
 	cp -a drivers/usb/gadget/g_file_storage.ko $ROOTFS/usr
