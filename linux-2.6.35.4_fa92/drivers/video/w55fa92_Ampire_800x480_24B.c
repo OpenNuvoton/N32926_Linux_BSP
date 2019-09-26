@@ -65,14 +65,9 @@ static int w55fa92fb_init_device(struct w55fa92fb_info *fbi)
 	outl(0x22222222, REG_GPCFUN1);									// enable LVDATA[15:8] pins		
 	outl((inl(REG_GPDFUN1)&0xFFFF000F)|0x00002220, REG_GPDFUN1);	// enable VDEN/VSYNC/HSYNC pins	
 	outl((inl(REG_GPEFUN0)&~(MF_GPE0+MF_GPE1))|0x22, REG_GPEFUN0);	// enable LVDATA[17:16] pins
-
-#define OPT_FGPA
-#ifdef OPT_FGPA // for FPGA
-//	outl((inl(0xB00000F0)&0xFFFFF000)|0x00000555, 0xB00000F0);  	// enable LVDATA[23:18] pins	
-#else
-	outl((inl(REG_GPBFUN1)&0xFFF00000)|0x00022222, REG_GPBFUN1);  	// enable LVDATA[23:18] pins	
-#endif		
-   	
+	outl((inl(REG_GPBFUN0)&0x0FFFFFFF)|0x20000000, REG_GPBFUN0);  	// enable LVDATA[18] pin
+	outl((inl(REG_GPBFUN1)&0xFFF00000)|0x00022222, REG_GPBFUN1);  	// enable LVDATA[23:19] pins
+	
 	// configure LCD interface  // enable sync with TV, LCD type select 
    	outl(inl(REG_LCM_LCDCPrm)& ~LCDCPrm_LCDSynTv, REG_LCM_LCDCPrm);	// async with TV
    	outl(inl(REG_LCM_LCDCPrm)& ~LCDCPrm_LCDTYPE, REG_LCM_LCDCPrm);	// High Resolution mode
