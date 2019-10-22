@@ -24,7 +24,6 @@
  */
 
 #include <linux/module.h>
-
 #include <linux/kernel.h>
 #include <linux/init.h>
 #include <linux/types.h>
@@ -32,7 +31,6 @@
 #include <linux/interrupt.h>
 #include <linux/ptrace.h>
 #include <linux/poll.h>
-
 #include <linux/slab.h>
 #include <linux/tty.h>
 #include <linux/errno.h>
@@ -40,13 +38,17 @@
 #include <linux/signal.h>
 #include <linux/ioctl.h>
 #include <linux/skbuff.h>
-
 #include <net/bluetooth/bluetooth.h>
 #include <net/bluetooth/hci_core.h>
+#include <linux/version.h>
 
 #include "hci_uart.h"
 
-#define VERSION "1.2"
+#ifdef BTCOEX
+#include "rtk_coex.h"
+#endif
+
+//#define VERSION "1.2"
 
 struct h4_struct {
 	unsigned long rx_state;
@@ -124,14 +126,22 @@ static int h4_enqueue(struct hci_uart *hu, struct sk_buff *skb)
 	return 0;
 }
 
+#if HCI_VERSION_CODE < KERNEL_VERSION(3, 13, 0)
 static inline int h4_check_data_len(struct h4_struct *h4, int len)
+#else
+static inline int h4_check_data_len(struct hci_dev *hdev, struct h4_struct *h4, int len)
+#endif
 {
 	register int room = skb_tailroom(h4->rx_skb);
 
 	BT_DBG("len %d room %d", len, room);
 
 	if (!len) {
+#if HCI_VERSION_CODE < KERNEL_VERSION(3, 13, 0)
 		hci_recv_frame(h4->rx_skb);
+#else
+		hci_recv_frame(hdev, h4->rx_skb);
+#endif
 	} else if (len > room) {
 		BT_ERR("Data length is too large");
 		kfree_skb(h4->rx_skb);
@@ -174,8 +184,23 @@ static int h4_recv(struct hci_uart *hu, void *data, int count)
 			switch (h4->rx_state) {
 			case H4_W4_DATA:
 				BT_DBG("Complete data");
+#ifdef BTCOEX
+				if(bt_cb(h4->rx_skb)->pkt_type == HCI_EVENT_PKT)
+					rtk_btcoex_parse_event(
+							h4->rx_skb->data,
+							h4->rx_skb->len);
 
+				if(bt_cb(h4->rx_skb)->pkt_type == HCI_ACLDATA_PKT)
+					rtk_btcoex_parse_l2cap_data_rx(
+							h4->rx_skb->data,
+							h4->rx_skb->len);
+#endif
+
+#if HCI_VERSION_CODE < KERNEL_VERSION(3, 13, 0)
 				hci_recv_frame(h4->rx_skb);
+#else
+				hci_recv_frame(hu->hdev, h4->rx_skb);
+#endif
 
 				h4->rx_state = H4_W4_PACKET_TYPE;
 				h4->rx_skb = NULL;
@@ -186,7 +211,11 @@ static int h4_recv(struct hci_uart *hu, void *data, int count)
 
 				BT_DBG("Event header: evt 0x%2.2x plen %d", eh->evt, eh->plen);
 
+#if HCI_VERSION_CODE < KERNEL_VERSION(3, 13, 0)
 				h4_check_data_len(h4, eh->plen);
+#else
+				h4_check_data_len(hu->hdev, h4, eh->plen);
+#endif
 				continue;
 
 			case H4_W4_ACL_HDR:
@@ -195,7 +224,11 @@ static int h4_recv(struct hci_uart *hu, void *data, int count)
 
 				BT_DBG("ACL header: dlen %d", dlen);
 
+#if HCI_VERSION_CODE < KERNEL_VERSION(3, 13, 0)
 				h4_check_data_len(h4, dlen);
+#else
+				h4_check_data_len(hu->hdev, h4, dlen);
+#endif
 				continue;
 
 			case H4_W4_SCO_HDR:
@@ -203,7 +236,11 @@ static int h4_recv(struct hci_uart *hu, void *data, int count)
 
 				BT_DBG("SCO header: dlen %d", sh->dlen);
 
+#if HCI_VERSION_CODE < KERNEL_VERSION(3, 13, 0)
 				h4_check_data_len(h4, sh->dlen);
+#else
+				h4_check_data_len(hu->hdev, h4, sh->dlen);
+#endif
 				continue;
 			}
 		}
@@ -272,7 +309,7 @@ static struct hci_uart_proto h4p = {
 	.flush		= h4_flush,
 };
 
-int h4_init(void)
+int __init h4_init(void)
 {
 	int err = hci_uart_register_proto(&h4p);
 
@@ -284,7 +321,7 @@ int h4_init(void)
 	return err;
 }
 
-int h4_deinit(void)
+int __exit h4_deinit(void)
 {
 	return hci_uart_unregister_proto(&h4p);
 }
