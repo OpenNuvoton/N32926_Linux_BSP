@@ -206,6 +206,11 @@ static struct i2c_board_info __initdata w55fa92_i2c_clients[] = {
                 I2C_BOARD_INFO("sc2133", 0x36),
         },
 #endif
+#if defined(CONFIG_SENSOR_PO2210N_DEV1)
+		{
+                I2C_BOARD_INFO("po2210n", 0x77),
+        },
+#endif
 
 #if defined(CONFIG_SENSOR_OV7670_DEV2)
 		{
@@ -325,6 +330,11 @@ static struct i2c_board_info __initdata w55fa92_i2c_clients[] = {
 #if defined(CONFIG_SENSOR_OV2710_DEV2)
 		{
                 I2C_BOARD_INFO("sc2133_dev2", 0x36),
+        },
+#endif
+#if defined(CONFIG_SENSOR_PO2210N_DEV2)
+		{
+                I2C_BOARD_INFO("po2210n_dev2", 0x77),
         },
 #endif
 

@@ -128,7 +128,9 @@ static VINIOCTL_T 			DevIoctl;
 #elif defined  CONFIG_SENSOR_TVP5150_DEV1
 	static __u32 u32Sensor = TVP_5150;
 #elif defined  CONFIG_SENSOR_XC7021_DEV1
-	static __u32 u32Sensor = XC_7021;	
+	static __u32 u32Sensor = XC_7021;
+#elif defined  CONFIG_SENSOR_PO2210N_DEV1
+	static __u32 u32Sensor = PO_2210N;	
 #else
 # error "please select one sensor"
 #endif

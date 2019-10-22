@@ -164,7 +164,9 @@ choice
 		config SENSOR_TVP5150_DEV1	
 			bool "TVP5150 TV decoder support"
 		config SENSOR_XC7021_DEV1
-			bool "XC7021 ISP sensor support"			
+			bool "XC7021 ISP sensor support"
+                config SENSOR_PO2210N_DEV1
+			bool "PO2210N sensor support"		
 endchoice
 
 choice

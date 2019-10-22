@@ -19,19 +19,19 @@ obj-$(CONFIG_SENSOR_HM1375_DEV1)	+= sensor_hm1375.o
 obj-$(CONFIG_SENSOR_HM1055_DEV1)	+= sensor_hm1055.o
 obj-$(CONFIG_SENSOR_SP1628_DEV1)	+= sensor_sp1628.o
 obj-$(CONFIG_SENSOR_TW9912_DEV1)	+= sensor_tw9912.o
-#obj-$(CONFIG_SENSOR_HI702_DEV1)		+= sensor_hi702.o
+#obj-$(CONFIG_SENSOR_HI702_DEV1)	+= sensor_hi702.o
 obj-$(CONFIG_SENSOR_OV7725_DEV1)	+= sensor.o
 obj-$(CONFIG_SENSOR_OV9660_DEV1)	+= sensor.o
 obj-$(CONFIG_SENSOR_OV7670_DEV1)	+= sensor.o
 obj-$(CONFIG_SENSOR_GC0308_DEV1)	+= sensor_gc0308.o
 obj-$(CONFIG_SENSOR_GC0303_DEV1)	+= sensor_gc0303.o
-obj-$(CONFIG_SENSOR_AVNET_DEV1)	+= sensor_avnet.o
+obj-$(CONFIG_SENSOR_AVNET_DEV1)		+= sensor_avnet.o
 obj-$(CONFIG_SENSOR_OV10633_DEV1)	+= sensor_ov10633.o
 obj-$(CONFIG_SENSOR_SC1046_DEV1)	+= sensor_sc1046.o
 obj-$(CONFIG_SENSOR_GM7150_DEV1)	+= sensor_gm7150.o
 obj-$(CONFIG_SENSOR_TW9900_DEV1)	+= sensor_tw9900.o
 obj-$(CONFIG_SENSOR_TVP5150_DEV1)	+= sensor_tvp5150.o
-
+obj-$(CONFIG_SENSOR_PO2210N_DEV1)	+= sensor_po2210n.o
 
 
 

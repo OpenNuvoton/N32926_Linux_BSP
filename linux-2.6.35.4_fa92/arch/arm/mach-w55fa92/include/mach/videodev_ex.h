@@ -110,6 +110,7 @@ enum{
 		OV_10633=10633,
 		SC_1046=1046,
 		XC_7021=7021,
+                PO_2210N=2210
 };
 
 #endif /* __LINUX_VIDEODEV_EX_H */

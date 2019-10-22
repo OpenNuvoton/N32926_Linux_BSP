@@ -1,0 +1,675 @@
+
+[PO2210N(Rev.0)]
+
+############## Base Settings ################
+
+W0300
+W3CC4 # Internal DVDD OFF, bgrcon_15 = 000b (1.35V)
+
+W0401 # chip_mode
+
+W0608 # framewidth_h
+W0797 # framewidth_l
+W0806	#	frameheight_a_h
+W0916	#	frameheight_a_l
+W0A06	#	frameheight_b_h
+W0B16	#	frameheight_b_l
+
+########################## 160217 start
+
+#W22F0 # i2c_control_1
+
+W240A # clkdiv1
+W2522 # clkdiv2
+
+#W2250 # i2c_control_1
+
+########################## 160217 end
+
+W2F01 # pad_control7        (01)
+W2A43 # pad_control2        (00)
+W2B9C # pad_control3        (00)
+W2E03 # pad_control6        (00)
+W30FF # pad_control8        (00)
+W31FF # pad_control9        (00)
+
+W8788 # led_control
+
+W4004 # pll_m_cnt
+W4102 # pll_r_cnt
+
+W3F50 # pll_control1
+
+############# Start Settings ################
+W0301
+W1604 # led_dsel
+WB740 # adcoffset
+
+W0302
+W2B14 # dpc_offset
+
+#################################### blacksun
+
+W0301
+W1E0E # bsmode off
+W2604 # blacksunth_h
+
+#################################### recommended by design1 150813
+W0301   # Limiter reference fitting due to gain
+WF60E   # bs_ofst0
+WF714   # bs_ofst1
+WF824   # bs_ofst2
+WF926   # bs_ofst3
+WFA26   # bs_ofst4
+WFB26   # bs_ofst5
+WFC26   # bs_ofst6
+WFD26   # bs_ofst_max
+WFE00   # bs_ofst_min
+
+#################################### cds v1.1
+W0300
+W3508 # pixelbias (01)
+W3604 # compbias (02)
+
+W0301
+W19C4 # ramppclk_sel
+W1C11 # ramp speed X1, adc speed X1
+
+W0301
+W5708
+W587F
+W5908
+W5A96
+W5300
+W5402
+W5508
+W567F
+W6700
+W6854
+W6900
+W6A5E
+W5B00
+W5C00
+W5D08
+W5E7F
+W5F00
+W6000
+W6100
+W6250
+W9900
+W9A54
+W9B08
+W9C7F
+W6F00
+W7000
+W7105
+W727A
+W7300
+W7400
+W7505
+W7678
+W7708
+W7895
+W7908
+W7A96
+#WB740
+W8F00
+W9052
+W8B00
+W8C64
+W8D08
+W8E6A
+W8708
+W8848
+W8908
+W8A7C
+W9508
+W9680
+W9708
+W988F
+W9108
+W9280
+W9308
+W9497
+W7F08
+W8080
+W8108
+W828F
+W8308
+W8480
+W8508
+W868F
+WB908
+WBA80
+WBB08
+WBC8F
+WA10B
+WA284
+W3600
+W37BE
+W3808
+W394E
+W7B00
+W7C00
+W7D05
+W7E7C
+W3E00
+W3FBE
+W4008
+W414E
+
+#################################### ablc
+W0300
+W3898 # analog_control_02	txl_drv (4.1V->4.3V)
+W3D2F # analog_control_07
+
+W0301 # bank B
+W1F51 # bayer_control_10
+W20A8 # Median value for filter and Average value for selection
+WA3E0 # blc_top_th
+WA470 # blc_bot_th
+WA502 # ablc_update
+
+W0304
+W06A1 # auto_control_3[0] : ablc fitting enable
+
+# fitting x reference
+W0304
+WC700 # overOBP_xref0 
+WC808 # overOBP_xref1 
+WC91E # overOBP_xref2 
+WCA32 # overOBP_xref3 
+WCB58 # overOBP_xref4 
+   
+# fitting y reference
+W0303
+WDC00 # overOBP_yref0 
+WDD16 # overOBP_yref1 
+WDE1B # overOBP_yref2 
+WE025 # overOBP_yref3 
+WE130 # overOBP_yref4 		
+
+#################################### intp
+W0303
+W3000	# intp_w0       (10)
+W31FF	# intp_x0       (00)
+W3240	# intp_slope    (40)
+
+#################################### blf
+W0302
+W05FB	# [4] edge_blf_mode : 0=new, 1=old	FB
+
+W0303
+W3300	# blf_w0_ref0	00
+W3440	# blf_w0_ref1	00
+W3540	# blf_w0_ref2	00
+
+W3720	# blf_x0	20
+W3840	# blf_slope	40
+
+W397F	# blf_c0	80	7F
+W3A78	# blf_c1	60	78
+W3B63	# blf_c2	40	63
+W3C3F	# blf_c3	20	2F
+W3D2B	# blf_c4	10	0B
+W3E18	# blf_c5	08	00
+
+#################################### sc
+W0309
+W0403 #	acce_ctrl_0 [1]:acce enable, [0]:histogram enable (00)
+W6D04 # ac_ctrl_0 [2]:AE relate mode
+
+W4930	# ce_th      (20)
+W4A10	# ce_x0      (40)
+W4B40	# ce_slope   (40)
+
+WAD08 #08 # lpf_w1 (08)
+WAE10 #10 # lpf_w2 (18)
+WAF20 #20 # lpf_w3 (40)
+WB010 #10 # lpf_w4 (18)
+WB108 #08 # lpf_w5 (08)
+
+WB204 # ac_offset
+WB360 # max_ac_gain0
+WB460 # max_ac_gain1
+WB540 # max_ac_gain2
+
+WB740 # min_ac_gain
+WB803 # ac_speed
+WB902 # ac_lock
+WBB04 # ac_frame
+
+W8E00 # ac_cv_w0 
+W8F04 # ac_cv_w1 
+W9006 # ac_cv_w2 
+W9106 # ac_cv_w3 
+W9204 # ac_cv_w4 
+W9303 # ac_cv_w5 
+W9401 # ac_cv_w6 
+W9500 # ac_cv_w7 
+
+#################################### ae
+
+#Flicker canceling mode
+W0300
+W4A40
+
+W0300
+W5400
+W55b5
+W56d1
+
+W5700
+W58DA
+W592E
+
+#Y target control
+W0304
+W3B50
+W3C58
+W3D48
+W3E50
+W3F48
+W4048
+W4100
+W4200
+W4314
+W4400
+W4502
+W46E8
+W4700
+W4845
+W49E0
+W4A00
+W4B8B
+W4CC0
+
+#Auto exposure control
+W0304
+W1204
+W135E
+W1404
+W155E
+W1604
+W175E
+W1B00
+W1C8B
+W1DC0
+W1E00
+W1F8B
+W20C0
+
+#Reference Gain Control
+W0304
+WBA10
+
+#saturation level th
+W0304
+W2C66
+
+#Auto exposure option
+W0304
+W5504
+W5604
+W570C
+
+#Center window weight
+W0304
+W3420
+
+#################################### gm
+
+#gamma curve fitting
+W0302
+W3D00
+W3E27
+W3F36
+W4040
+W4149
+W4258
+W4364
+W4478
+W4589
+W46A4
+W47BB
+W48CF
+W49E0
+W4AF1
+W4BFF
+
+#gamma curve fitting
+W0302
+W5B00
+W5C01
+W5D07
+W5E10
+W5F1C
+W6035
+W614C
+W6270
+W6389
+W64AB
+W65C3
+W66D5
+W67E5
+W68F3
+W69FF
+
+#################################### awb
+
+# Set AWB Sampling Boundary
+W0304
+W5C00
+W5D40
+W5EA0
+W5F01
+W6002
+W6150
+W6202
+W6300
+W6404
+W656E
+W6645
+
+W0304
+W6727
+W684F
+W6964
+W6AC4
+W6B0A
+W6C46
+W6D32
+W6E78
+W6F37
+W70AF
+W7132
+W7223
+
+#AWB option
+W0304
+W7E08
+W7F04
+
+#lens / cs axis
+W0303
+W0A3E
+W0B5D
+W0C6C
+
+################################### color
+
+#Color correction
+W0302
+W3332
+W3487
+W358B
+W368E
+W373D
+W388F
+W3992
+W3A85
+W3B37
+
+#Color saturation weight
+W0303
+W0D20
+
+W0302
+W0B86 # user_cs_mode [3]
+
+W0303
+W8AF0	# dc_y2
+
+################################ edge
+
+#Edge control
+W0302
+W05FB
+W0900
+W0B82
+
+#sharpness control
+W0303
+W7040
+W7140
+
+#Edge gamma curve
+W0303
+W4850
+W4940
+W4A30
+W4B20
+W4C18
+W4D10
+W4E10
+
+#edge_gain_lf
+W0303
+W5318
+W5410
+W5508
+
+#edge_gain_ghf
+W0303
+W5710
+W5810
+W5910
+
+#edge_gain_ehf
+W0303
+W5B10
+W5C10
+W5D10
+
+##################################### vec
+
+W0303
+W930C # vec_en (00)
+
+# Set sample range for Vector Control
+W0303
+W9414
+W951B
+W981C
+W9926
+W9C35
+W9D42
+WA044
+WA162
+WA464
+WA572
+WA876
+WA980
+
+# Set hue & saturation (a)
+W0303
+WAC90
+WAF04
+WB207
+WB504
+WB882
+WBB04
+WBE92
+WC104
+WC485
+WC704
+WCA86
+WCD04
+
+# Set hue & saturation (b)
+W0303
+WAD88
+WB004
+WB30B
+WB600
+WB905
+WBC04
+WBF8B
+WC204
+WC585
+WC804
+WCB84
+WCE04
+
+# Set hue & saturation (c)
+W0303
+WAE88
+WB104
+WB482
+WB704
+WBA01
+WBD04
+WC000
+WC306
+WC607
+WC904
+WCC00
+WCF04
+
+#################################### dark
+
+#Darkness X reference
+W0304
+W9800
+W9904
+W9A00
+W9B10
+W9C00
+W9D20
+
+#dark_y_weight
+W0303
+W7A40
+W7B40
+W7C80
+
+#dark_ccr
+W0303
+W7E04
+W7F04
+W8004
+
+#dark_dc
+W0303
+W8200
+W830A
+W8424
+
+#ycont_slope2
+W0303
+WE840
+WE940
+WEA40
+
+#dark_edge_gm
+W0303
+W4F00
+W5000
+W5100
+
+#dark_ec_pth
+W0303
+W6004
+W6104
+W6204
+
+#dark_ec_mth
+W0303
+W6404
+W6504
+W6604
+
+#dark_dpc_p
+W0303
+W1A00
+W1B04
+W1C7F
+
+#dark_dpc_n
+W0303
+W1E00
+W1F08
+W2018
+
+#ybrightness
+W0302
+W9500
+W9600
+W9700
+
+#blf_darkness
+W0303
+W3F38
+W4010
+W4100
+
+#dark_ec_pmax
+W0303
+W6840
+W6910
+W6A08
+
+#dark_ec_mmax
+W0303
+W6C40
+W6D20
+W6E08
+
+#hf_dir_max
+W0303
+W241C
+W251C
+W267F
+
+#intp_dir_th
+W0303
+W2808
+W2908
+W2A7F
+
+
+########################## 160128 start
+W0302
+W0D11	#lens_red_e
+W0E11	#lens_red_w
+W0F11	#lens_red_n
+W1011	#lens_red_s
+W1111	#lens_g1_e	
+W1211	#lens_g1_w	
+W1311	#lens_g1_n	
+W1411	#lens_g1_s	
+W1511	#lens_g2_e	
+W1611	#lens_g2_w	
+W1711	#lens_g2_n	
+W1811	#lens_g2_s	
+W1911	#lens_blu_e
+W1A11	#lens_blu_w
+W1B11	#lens_blu_n
+W1C11	#lens_blu_s
+
+#enable lens/cs fitting
+W0304
+W0564
+
+#lens gain fitting
+W0302
+W1E48
+W1F48
+
+W0303
+W0440
+W0540
+W0640
+W0740
+W0840
+W0940
+
+#dark_lens
+W0303
+W1600
+W1700
+W18FF
+
+W0300
+W3F40 # pll_control1
+########################## 160128 end
