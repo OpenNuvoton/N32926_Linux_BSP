@@ -23,7 +23,7 @@
 #include <mach/w55fa92_reg.h>
 
 #define DRV_MODULE_NAME		"w55fa92-emc"
-#define DRV_MODULE_VERSION	"2.1"
+#define DRV_MODULE_VERSION	"2.2"
 
 
 /* Ethernet MAC Registers */
@@ -902,6 +902,7 @@ static int w55fa92_ether_open(struct net_device *dev)
 	w55fa92_enable_cam_command(dev);
 	w55fa92_enable_mac_interrupt(dev);
 	w55fa92_set_global_maccmd(dev);
+    __raw_writel(1518, REG_DMARFC); // Limit max receive frame length as (1514+4)
 	w55fa92_enable_rx(dev, 1);
 
 	ether->rx_packets = 0x0;
