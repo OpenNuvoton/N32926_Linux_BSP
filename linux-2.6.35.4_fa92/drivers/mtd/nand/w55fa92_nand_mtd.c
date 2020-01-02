@@ -56,7 +56,7 @@
 #define Disable_IRQ(n)  writel(	1<<(n),	REG_AIC_MDCR)
 
 
-#define	W55FA92_DRV_VERSION "20140902"
+#define	W55FA92_DRV_VERSION "20191118"
 #define DEF_RESERVER_OOB_SIZE_FOR_MARKER 4
 #define DMAC_TRANSFER
 
@@ -67,8 +67,8 @@
 
 //#define W55FA92_NAND_DEBUG
 #ifndef W55FA92_NAND_DEBUG
-#define DBG(fmt, arg...)			
-#define ENTER() 
+#define DBG(fmt, arg...)
+#define ENTER()
 #define LEAVE()
 #else
 #define DBG(fmt, arg...)                      printk(fmt, ##arg)
@@ -152,7 +152,7 @@ struct w55fa92_nand_info {
 	int			m_i32MyShowTime;
 	spinlock_t 		lock;
 };
-typedef enum  { 
+typedef enum  {
 	eBCH_T4,
 	eBCH_T8,
 	eBCH_T12,
@@ -161,7 +161,7 @@ typedef enum  {
 	eBCH_CNT
 } E_BCHALGORITHM;
 
-typedef enum { 
+typedef enum {
 	ePageSize_512,
 	ePageSize_2048,
 	ePageSize_4096,
@@ -229,17 +229,17 @@ static void dump_regs(int i32Line)
 static void w55fa92_nand_hwecc_init (struct mtd_info *mtd)
 {
 	struct w55fa92_nand_info *nand = container_of(mtd, struct w55fa92_nand_info, mtd);
-	
+
 	writel ( readl(REG_SMCSR)|SMCR_SM_SWRST, REG_SMCSR);	// reset SM controller
 
 	// Mask ECC During Write Page Data. Do not mask the ECC parity for each field.
-	//writel( readl(REG_SMREAREA_CTL) & ~SMRE_MECC, REG_SMREAREA_CTL); 
+	//writel( readl(REG_SMREAREA_CTL) & ~SMRE_MECC, REG_SMREAREA_CTL);
 
 	// Redundant area size
 	//writel( (readl(REG_SMREAREA_CTL) & ~SMRE_REA128_EXT) | mtd->oobsize , REG_SMREAREA_CTL );
 	writel( nand->m_i32SMRASize , REG_SMREAREA_CTL );
 
-	// Protect redundant 3 bytes 
+	// Protect redundant 3 bytes
 	// because we need to implement write_oob function to partial data to oob available area.
 	// Please note we skip 4 bytes
 	writel( readl(REG_SMCSR) | SMCR_ECC_3B_PROTECT,        REG_SMCSR);
@@ -256,7 +256,7 @@ static void w55fa92_nand_hwecc_init (struct mtd_info *mtd)
 
 	} else  {
 		// Disable H/W ECC / ECC parity check enable bit during read page
-		writel( readl(REG_SMCSR) & (~SMCR_ECC_EN) &(~SMCR_ECC_CHK), 		REG_SMCSR);	
+		writel( readl(REG_SMCSR) & (~SMCR_ECC_EN) &(~SMCR_ECC_CHK), 		REG_SMCSR);
 	}
 
 }
@@ -279,7 +279,7 @@ static void w55fa92_nand_initialize ( void )
 	ENTER()	;
 
 	// Enable NAND RB0 pins
-	writel( readl(REG_GPAFUN1)|0xFFFF0000, REG_GPAFUN1);	
+	writel( readl(REG_GPAFUN1)|0xFFFF0000, REG_GPAFUN1);
 
 	// Enable NAND NCS0/NALE/NCLE pins
 	writel( readl(REG_GPEFUN1)|0x00003303, REG_GPEFUN1);
@@ -288,17 +288,17 @@ static void w55fa92_nand_initialize ( void )
 	writel( readl(REG_GPDFUN0)|0x30300000, REG_GPDFUN0);
 
 	// Enable NAND NWR pins
-	writel( readl(REG_GPDFUN1)|0x00000003, REG_GPDFUN1);	
+	writel( readl(REG_GPDFUN1)|0x00000003, REG_GPDFUN1);
 
 	// Enable SM_EN
 	writel(	NAND_EN, REG_FMICR );
-	
-	// Timing control 
+
+	// Timing control
 	//writel(0x3050b, REG_SMTCR);
-	// tCLS= (2+1)TAHB, 
-	// tCLH= (2*2+2)TAHB, 
-	// tALS= (2*1+1)TAHB, 
-	// tALH= (2*2+2)TAHB, 
+	// tCLS= (2+1)TAHB,
+	// tCLH= (2*2+2)TAHB,
+	// tALS= (2*1+1)TAHB,
+	// tALH= (2*2+2)TAHB,
 	writel(0x20305, REG_SMTCR);
 
 	// Enable SM_CS0
@@ -379,24 +379,24 @@ static const int g_i32ParityNum[ePageSize_CNT][eBCH_CNT] = {
 		(BCH_PARITY_LEN_T12* (512/BCH_LEN_512),
 		(BCH_PARITY_LEN_T15* (512/BCH_LEN_512),
 		-1, //not support
-	}, {// For 2K	
+	}, {// For 2K
 		(BCH_PARITY_LEN_T4*  (2048/BCH_LEN_512),
 		(BCH_PARITY_LEN_T8*  (2048/BCH_LEN_512),
 		(BCH_PARITY_LEN_T12* (2048/BCH_LEN_512),
 		(BCH_PARITY_LEN_T15* (2048/BCH_LEN_512),
-		(BCH_PARITY_LEN_T24* (2048/BCH_LEN_1024)	
+		(BCH_PARITY_LEN_T24* (2048/BCH_LEN_1024)
 	}, {// For 4K
 		(BCH_PARITY_LEN_T4*  (4096/BCH_LEN_512),
 		(BCH_PARITY_LEN_T8*  (4096/BCH_LEN_512),
 		(BCH_PARITY_LEN_T12* (4096/BCH_LEN_512),
 		(BCH_PARITY_LEN_T15* (4096/BCH_LEN_512),
 		(BCH_PARITY_LEN_T24* (4096/BCH_LEN_1024)
-	}, {// For 8K	
+	}, {// For 8K
 		(BCH_PARITY_LEN_T4*  (8192/BCH_LEN_512),
 		(BCH_PARITY_LEN_T8*  (8192/BCH_LEN_512),
 		(BCH_PARITY_LEN_T12* (8192/BCH_LEN_512),
 		(BCH_PARITY_LEN_T15* (8192/BCH_LEN_512),
-		(BCH_PARITY_LEN_T24* (8192/BCH_LEN_1024)	
+		(BCH_PARITY_LEN_T24* (8192/BCH_LEN_1024)
 	},
 */
 	{ 8,	15,	23,	29,	-1 	},	// For 512
@@ -432,7 +432,7 @@ static void w55fa92_choice_bch_algo ( struct mtd_info *mtd, int page )
 	u32 page_addr = page * mtd->writesize;
 
 	for ( i=0; i<nand->nr_parts; i++ )
-	{  
+	{
 		part = &nand->parts[i];
 		part_ecclayout = part->ecclayout;
 		if ( part_ecclayout && part_ecclayout != mtd->ecclayout ) {
@@ -641,7 +641,7 @@ int fmiSMCorrectData (struct mtd_info *mtd, unsigned long uDAddr )
 {
 	int uStatus, ii, jj, i32FieldNum=0;
 	volatile int uErrorCnt = 0;
-	
+
 	ENTER();
 
 	if ( readl ( REG_SMISR ) & SMISR_ECC_FIELD_IF )
@@ -662,7 +662,7 @@ int fmiSMCorrectData (struct mtd_info *mtd, unsigned long uDAddr )
 		if ( !uStatus )
 			continue;
 
-		for ( ii=1; ii<5; ii++ )	        
+		for ( ii=1; ii<5; ii++ )
 		{
 			if ( !(uStatus & 0x03) ) { // No error
 
@@ -685,12 +685,12 @@ int fmiSMCorrectData (struct mtd_info *mtd, unsigned long uDAddr )
 #endif
 				LEAVE();
 				return -1;
-			}            
-			uStatus >>= 8;		    		            
+			}
+			uStatus >>= 8;
 		}
 	    } //jj
-	} 
-	
+	}
+
 	LEAVE();
 	return uErrorCnt;
 }
@@ -751,10 +751,10 @@ static void w55fa92_nand_dmac_init( void )
 	writel( readl(REG_DMACCSR) & (~DMAC_SWRST), 	REG_DMACCSR);
 
 	// Clear DMA finished flag
-	writel( readl(REG_SMISR) | SMISR_DMA_IF,	REG_SMISR);  	
+	writel( readl(REG_SMISR) | SMISR_DMA_IF,	REG_SMISR);
 
 	// Disable Interrupt
-	writel(readl(REG_SMIER) & ~(SMIER_DMA_IE), 	REG_SMIER);	
+	writel(readl(REG_SMIER) & ~(SMIER_DMA_IE), 	REG_SMIER);
 }
 
 /*
@@ -763,7 +763,7 @@ static void w55fa92_nand_dmac_init( void )
 static void w55fa92_nand_dmac_fini( void)
 {
 	// Clear DMA finished flag
-        writel(readl(REG_SMISR) | SMISR_DMA_IF,		REG_SMISR);      
+        writel(readl(REG_SMISR) | SMISR_DMA_IF,		REG_SMISR);
 
 	// Disable Interrupt
 	// writel(readl(REG_SMIER) & ~(SMIER_DMA_IE), 	REG_SMIER);
@@ -782,18 +782,18 @@ static unsigned char w55fa92_nand_read_byte(struct mtd_info *mtd)
 	unsigned char ret;
 	struct w55fa92_nand_info *nand;
 
-        ENTER() ;
+    ENTER() ;
 
-        if ( w55fa92_wait_sem(mtd) < 0 )
+    if ( w55fa92_wait_sem(mtd) < 0 )
 		return -1;
 
 	nand = container_of(mtd, struct w55fa92_nand_info, mtd);
 
 	ret = (unsigned char)read_data_reg(nand);
 
-        w55fa92_release_sem(mtd);
+    w55fa92_release_sem(mtd);
 
-        LEAVE();
+    LEAVE();
 
 	return ret;
 }
@@ -877,7 +877,7 @@ static int w55fa92_verify_buf(struct mtd_info *mtd,
 			return -EFAULT;
 		}
 	}
-	
+
 	w55fa92_release_sem(mtd);
 
 	LEAVE();
@@ -904,8 +904,8 @@ static inline int _w55fa92_nand_dma_transfer(struct mtd_info *mtd, const u_char 
 	if ( down_interruptible(&dmac_sem) )
 		return -1;
 
-	// For save, wait DMAC to ready 
-	while ( readl(REG_DMACCSR) & FMI_BUSY ); 			
+	// For save, wait DMAC to ready
+	while ( readl(REG_DMACCSR) & FMI_BUSY );
 
 	// Reinitial dmac
 	w55fa92_nand_dmac_init();
@@ -928,7 +928,7 @@ static inline int _w55fa92_nand_dma_transfer(struct mtd_info *mtd, const u_char 
 
 	} else  {
 		// Disable H/W ECC / ECC parity check enable bit during read page
-		writel( readl(REG_SMCSR) & (~SMCR_ECC_EN) &(~SMCR_ECC_CHK), 		REG_SMCSR);	
+		writel( readl(REG_SMCSR) & (~SMCR_ECC_EN) &(~SMCR_ECC_CHK), 		REG_SMCSR);
 	}
 
 	writel( nand->m_i32SMRASize , REG_SMREAREA_CTL );
@@ -956,7 +956,7 @@ static inline int _w55fa92_nand_dma_transfer(struct mtd_info *mtd, const u_char 
 
 		while ( !(readl(REG_SMISR) & SMISR_DMA_IF) );
 
-	} else { 
+	} else {
 		// Blocking for reading
 		// Enable DMA Read
 
@@ -1141,34 +1141,36 @@ static void w55fa92_nand_command_lp(struct mtd_info *mtd, unsigned int command,
 
 	write_cmd_reg(nand, command & 0xff);
 
-	if (column != -1 || page_addr != -1) {
+    if (command == NAND_CMD_READID) {
+        /* Send READ ID command by only one write_addr_reg() */
+        /* Some NAND flash don't accept multiple write_addr_reg() */
+        write_addr_reg(nand, ENDADDR);
+    } else {
+    	if (column != -1 || page_addr != -1) {
 
-		if (column != -1) {
-			//if (chip->options & NAND_BUSWIDTH_16)
-			//	column >>= 1;
+    		if (column != -1) {
+    			//if (chip->options & NAND_BUSWIDTH_16)
+    			//	column >>= 1;
 
-			write_addr_reg(nand, (column&0xFF) );
-			if ( page_addr != -1 )
-				write_addr_reg(nand, (column >> 8) );
-			else
-				write_addr_reg(nand, (column >> 8) | ENDADDR);
+    			write_addr_reg(nand, (column&0xFF) );
+    			if ( page_addr != -1 )
+    				write_addr_reg(nand, (column >> 8) );
+    			else
+    				write_addr_reg(nand, (column >> 8) | ENDADDR);
+    		}
 
-		}
+    		if (page_addr != -1) {
 
-		if (page_addr != -1) {
-
-			write_addr_reg(nand, (page_addr&0xFF) );
-
-			if ( chip->chipsize > (128 << 20) ) {
-				write_addr_reg(nand, (page_addr >> 8)&0xFF );
-				write_addr_reg(nand, ((page_addr >> 16)&0xFF)|ENDADDR );
-			} else {
-				write_addr_reg(nand, ((page_addr >> 8)&0xFF)|ENDADDR );
-			}
-
-		}
-
-	}
+    			write_addr_reg(nand, (page_addr&0xFF) );
+       			if ( chip->chipsize > (128 << 20) ) {
+    				write_addr_reg(nand, (page_addr >> 8)&0xFF );
+    				write_addr_reg(nand, ((page_addr >> 16)&0xFF)|ENDADDR );
+    			} else {
+    				write_addr_reg(nand, ((page_addr >> 8)&0xFF)|ENDADDR );
+    			}
+    		}
+    	}
+    }
 
 	switch (command) {
 	case NAND_CMD_CACHEDPROG:
@@ -1278,7 +1280,7 @@ static void w55fa92_nand_write_page_hwecc(struct mtd_info *mtd, struct nand_chip
 	memcpy ( (void*)ptr, (void*)chip->oob_poi, 	mtd->oobsize - chip->ecc.total );
 
 	_w55fa92_nand_dma_transfer( mtd, buf, mtd->writesize , 0x1);
-	
+
 	// Copy parity code in SMRA to calc
 	memcpy ( (void*)ecc_calc,  (void*)( REG_SMRA_0 + ( mtd->oobsize - chip->ecc.total ) ), chip->ecc.total );
 
@@ -1339,7 +1341,7 @@ static void w55fa92_layout_oob_table ( struct nand_ecclayout* pNandOOBTbl, int o
 {
 	pNandOOBTbl->eccbytes = eccbytes;
 
-	pNandOOBTbl->oobavail = oobsize - DEF_RESERVER_OOB_SIZE_FOR_MARKER - eccbytes ;	
+	pNandOOBTbl->oobavail = oobsize - DEF_RESERVER_OOB_SIZE_FOR_MARKER - eccbytes ;
 
 	pNandOOBTbl->oobfree[0].offset = DEF_RESERVER_OOB_SIZE_FOR_MARKER;	// Bad block marker size
 
@@ -1494,7 +1496,7 @@ static int __devinit w55fa92_nand_probe(struct platform_device *pdev)
 	if(w55fa92_nand->pnand_vaddr == NULL){
 		printk(KERN_ERR "fa92_nand: failed to allocate ram for nand data.\n");
 		return -ENOMEM;
-	} 
+	}
 
 	platform_set_drvdata(pdev, w55fa92_nand);
 
@@ -1503,7 +1505,7 @@ static int __devinit w55fa92_nand_probe(struct platform_device *pdev)
 
 	w55fa92_nand->pdev = pdev;
 
-	mtd=&w55fa92_nand->mtd;		
+	mtd=&w55fa92_nand->mtd;
 	chip = &(w55fa92_nand->chip);
 
 	w55fa92_nand->mtd.priv	= chip;
@@ -1519,13 +1521,13 @@ static int __devinit w55fa92_nand_probe(struct platform_device *pdev)
                 retval = -ENXIO;
 	        goto fail1;
 	}
-	
+
         w55fa92_nand->clk = clk_get(NULL, "nand");
 	if (IS_ERR(w55fa92_nand->clk)) {
 		printk("no nand_clk?\n");
 		goto fail2;
 	}
-    
+
 	clk_enable(w55fa92_nand->sic_clk);
 	clk_enable(w55fa92_nand->clk);
 
@@ -1612,7 +1614,7 @@ static int __devinit w55fa92_nand_probe(struct platform_device *pdev)
 		// System area
 		int i32eBCHAlgo = 0;
 		switch(ePageSize) {
-			case 0: 
+			case 0:
 			case 1: i32eBCHAlgo = eBCH_T4;	break;
 			case 2: i32eBCHAlgo = eBCH_T8;	break;
 			case 3: i32eBCHAlgo = eBCH_T12;	break;
@@ -1622,9 +1624,9 @@ static int __devinit w55fa92_nand_probe(struct platform_device *pdev)
 		w55fa92_nand_SYSTEM_oob.m_BCHAlgoidx = i32eBCHAlgo;
 		w55fa92_nand_SYSTEM_oob.m_SMRASize   = g_SYSAREA_NAND_EXTRA_SIZE[ePageSize];
 		w55fa92_layout_oob_table ( (struct nand_ecclayout*)&w55fa92_nand_SYSTEM_oob, w55fa92_nand_SYSTEM_oob.m_SMRASize, g_i32ParityNum[ePageSize][i32eBCHAlgo] );
-		printk("SYSTEM: USE %s HWECC algorithm(SMRA size: %d, Parity number:%d bytes)\n", 
-										g_pcBCHAlgoIdx[i32eBCHAlgo], 
-										w55fa92_nand_SYSTEM_oob.m_SMRASize, 
+		printk("SYSTEM: USE %s HWECC algorithm(SMRA size: %d, Parity number:%d bytes)\n",
+										g_pcBCHAlgoIdx[i32eBCHAlgo],
+										w55fa92_nand_SYSTEM_oob.m_SMRASize,
 										g_i32ParityNum[ePageSize][i32eBCHAlgo] );
 
 
@@ -1641,9 +1643,9 @@ static int __devinit w55fa92_nand_probe(struct platform_device *pdev)
 
 		if ( i32eBCHAlgo >= 0 ) {
 			w55fa92_layout_oob_table ( (struct nand_ecclayout*)&w55fa92_nand_EXECUTE_oob, w55fa92_nand_EXECUTE_oob.m_SMRASize, g_i32ParityNum[ePageSize][i32eBCHAlgo] );
-			printk("EXECUTE: USE %s HWECC algorithm(SMRA size: %d, Parity number:%d bytes)\n", 
-										g_pcBCHAlgoIdx[i32eBCHAlgo], 
-										w55fa92_nand_EXECUTE_oob.m_SMRASize, 
+			printk("EXECUTE: USE %s HWECC algorithm(SMRA size: %d, Parity number:%d bytes)\n",
+										g_pcBCHAlgoIdx[i32eBCHAlgo],
+										w55fa92_nand_EXECUTE_oob.m_SMRASize,
 										g_i32ParityNum[ePageSize][i32eBCHAlgo] );
 		}
 
@@ -1674,7 +1676,7 @@ static int __devinit w55fa92_nand_probe(struct platform_device *pdev)
                 goto fail3;
         }
 
-	if ( w55fa92_nand->eBCHAlgo >= 0 ) 
+	if ( w55fa92_nand->eBCHAlgo >= 0 )
 		w55fa92_nand_hwecc_init (&(w55fa92_nand->mtd));
 	else
 		w55fa92_nand_hwecc_fini (&(w55fa92_nand->mtd));
@@ -1690,13 +1692,13 @@ static int __devinit w55fa92_nand_probe(struct platform_device *pdev)
 #endif
 
 	LEAVE();
-	
+
 	dump_regs(__LINE__);
 
 	printk("fmi-sm: registered successfully! \n");
 	return retval;
 fail3:
-fail2:	
+fail2:
 fail1:	kfree(w55fa92_nand);
 	return retval;
 }
@@ -1717,7 +1719,7 @@ static int __devexit w55fa92_nand_remove(struct platform_device *pdev)
 
         clk_put(w55fa92_nand->clk);
 
-	dma_free_coherent(NULL, 512*16, w55fa92_nand->pnand_vaddr, (dma_addr_t )w55fa92_nand->pnand_phyaddr);	
+	dma_free_coherent(NULL, 512*16, w55fa92_nand->pnand_vaddr, (dma_addr_t )w55fa92_nand->pnand_phyaddr);
 
         kfree(w55fa92_nand);
 
@@ -1769,7 +1771,7 @@ static void __exit w55fa92_nand_exit(void)
 
 module_init(w55fa92_nand_init);
 module_exit(w55fa92_nand_exit);
-	
+
 MODULE_AUTHOR("nuvoton");
 MODULE_DESCRIPTION("w55fa92 nand driver!");
 MODULE_LICENSE("GPL");
