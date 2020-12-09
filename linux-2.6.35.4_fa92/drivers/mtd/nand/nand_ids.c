@@ -115,10 +115,13 @@ struct nand_flash_dev nand_flash_ids[] = {
 	{"NAND 2GiB 3,3V 16-bit",	0xC5, 0, 2048, 0, LP_OPTIONS16},
         
 	/* MT29F16G08CBACA */
-        {"NAND 2GiB 3,3V 8-bit",        0x48, 0, 2048, 0, LP_OPTIONS|NAND_NO_SUBPAGE_WRITE},
+	{"NAND 2GiB 3,3V 8-bit",        0x48, 0, 2048, 0, LP_OPTIONS|NAND_NO_SUBPAGE_WRITE},
 
-        /* MT29F32G08CBACA */
-        {"NAND 4GiB 3,3V 8-bit",        0x68, 0, 4096, 0, LP_OPTIONS|NAND_NO_SUBPAGE_WRITE},
+	/* MT29F32G08CBACA */
+	{"NAND 4GiB 3,3V 8-bit",        0x68, 0, 4096, 0, LP_OPTIONS|NAND_NO_SUBPAGE_WRITE},
+
+	/* Micron MT29F4G08ABAEA */
+	{"NAND 512MiB 3,3V 8-bit",      0xDC, 0, 4096, 0, LP_OPTIONS|NAND_NO_SUBPAGE_WRITE},
 
 	/*
 	 * Renesas AND 1 Gigabit. Those chips do not support extended id and

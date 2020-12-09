@@ -72,8 +72,10 @@
 #define LEAVE()
 #else
 #define DBG(fmt, arg...)                      printk(fmt, ##arg)
-#define ENTER()	u32 U32_MTDNAND_START=0; u32 U32_MTDNAND_STOP=0; DBG("[%s, %d] : %d\n", __FUNCTION__, __LINE__, __raw_readl(REG_TDR1)); U32_MTDNAND_START=(__raw_readl(REG_TDR1));
-#define LEAVE()	U32_MTDNAND_STOP=(__raw_readl(REG_TDR1)); DBG("[%s, %d] : Leave(%d)\n", __FUNCTION__, __LINE__, (U32_MTDNAND_STOP-U32_MTDNAND_START)/(CLOCK_TICK_RATE/1000));
+#define ENTER()
+#define LEAVE()
+//#define ENTER()	u32 U32_MTDNAND_START=0; u32 U32_MTDNAND_STOP=0; DBG("[%s, %d] : %d\n", __FUNCTION__, __LINE__, __raw_readl(REG_TDR1)); U32_MTDNAND_START=(__raw_readl(REG_TDR1));
+//#define LEAVE()	U32_MTDNAND_STOP=(__raw_readl(REG_TDR1)); DBG("[%s, %d] : Leave(%d)\n", __FUNCTION__, __LINE__, (U32_MTDNAND_STOP-U32_MTDNAND_START)/(CLOCK_TICK_RATE/1000));
 #endif
 
 extern struct semaphore fmi_sem;
@@ -218,6 +220,8 @@ static void dump_regs(int i32Line)
 	printk("REG_SMTCR[A4] : 0x%08X\n",	readl(REG_SMTCR));
 
 	printk("REG_DMACSAR[08] : 0x%08X\n",	readl(REG_DMACSAR));
+ 
+        printk("REG_SMREAREA_CTL[BC] : 0x%08X\n",   readl(REG_SMREAREA_CTL));
 
 	printk("============[%d]==============\n", i32Line);
 }
@@ -1670,18 +1674,18 @@ static int __devinit w55fa92_nand_probe(struct platform_device *pdev)
 		printk("USE %s HWECC algorithm(Parity number:%d bytes)\n", g_pcBCHAlgoIdx[w55fa92_nand->eBCHAlgo],  g_i32ParityNum[ePageSize][w55fa92_nand->eBCHAlgo] );
 	}
 
+        if ( w55fa92_nand->eBCHAlgo >= 0 )
+                w55fa92_nand_hwecc_init (&(w55fa92_nand->mtd));
+        else
+                w55fa92_nand_hwecc_fini (&(w55fa92_nand->mtd));
+
+        dump_chip_info( chip );
+
         /* second phase scan */
         if ( nand_scan_tail( &(w55fa92_nand->mtd) ) ) {
                 retval = -ENXIO;
                 goto fail3;
         }
-
-	if ( w55fa92_nand->eBCHAlgo >= 0 )
-		w55fa92_nand_hwecc_init (&(w55fa92_nand->mtd));
-	else
-		w55fa92_nand_hwecc_fini (&(w55fa92_nand->mtd));
-
-	dump_chip_info( chip );
 
 #ifdef CONFIG_MTD_PARTITIONS
 	if ( add_mtd_partitions(&(w55fa92_nand->mtd), partitions, ARRAY_SIZE(partitions) ) < 0 )

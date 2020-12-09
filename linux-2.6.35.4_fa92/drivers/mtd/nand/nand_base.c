@@ -2891,18 +2891,25 @@ static struct nand_flash_dev *nand_get_flash_type(struct mtd_info *mtd,
                                         && mtd->writesize >= 4096
                                         && id_data[5] == 0x00
                                         && id_data[6] == 0x00) {
-	                        
-				/* OOB is 218B/224B per 4KiB pagesize */
-	                        mtd->oobsize = ((extid & 0x03) == 0x03 ? 218 :
-	                                        224) << (mtd->writesize >> 13);
-	                        extid >>= 3;
-	                        /* Blocksize is multiple of 64KiB */
-	                        mtd->erasesize = mtd->writesize << (extid & 0x03) << 6;
-        	                /* All Micron have busw x8? */
-	                        busw = 0;
-				
-				// 1110129: This oobsize is wrong. It is corresponding with NANDLOADER.
-				mtd->oobsize = 216;
+
+                /* 1110129: This oobsize is wrong. It is corresponding with NANDLOADER. */
+                mtd->oobsize = 216;
+
+                /* 1110129: Support Micron MT29F4G08ABAEA */
+                if ( id_data[1] == 0xDC || id_data[1] == 0xAC )
+                {
+                    extid >>= 2;
+                    /* 256KiB */
+                    mtd->erasesize = mtd->writesize << (extid & 0x03) << 4;
+                }
+                else
+                {
+                    extid >>= 3;
+                    /* Blocksize is multiple of 64KiB */
+                    mtd->erasesize = mtd->writesize << (extid & 0x03) << 6;
+                }
+                /* All Micron have busw x8? */
+                busw = 0;
 
 			}  else {
 
