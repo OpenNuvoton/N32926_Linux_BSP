@@ -624,6 +624,24 @@ int w55fa92_blt_ioctl(struct inode *inode, struct file *filp, unsigned int cmd, 
 		bltSetRGB565TransparentCtl(0);
 		break;
 	
+    case BLT_IOCTBLTSRCFMTPREMULALPHA:
+		if (test_bit(BLT_STAT_BY, &priv->stat)) {
+			err = -EBUSY;
+			break;
+		}
+		
+		bltSetRevealAlpha(eDRVBLT_EFFECTIVE);
+		break;
+
+    case BLT_IOCTBLTSRCFMTNONPREMULALPHA:
+		if (test_bit(BLT_STAT_BY, &priv->stat)) {
+			err = -EBUSY;
+			break;
+		}
+		
+		bltSetRevealAlpha(eDRVBLT_NO_EFFECTIVE);
+		break;
+
 	case BLT_IOCQBUSY:
 		err = test_bit(BLT_STAT_BY, &priv->stat);
 		break;
