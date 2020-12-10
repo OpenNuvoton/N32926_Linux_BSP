@@ -75,6 +75,12 @@
 #define IRQ_TIMER2     W55FA92_IRQ(46)
 #define IRQ_TIMER3     W55FA92_IRQ(47)
 
+#ifndef CONFIG_GPIO_W55FA92
 #define NR_IRQS        48
+#else
+#define IRQ_GPIO_START 	W55FA92_IRQ(W55FA92_IRQ(0x100))
+#define IRQ_GPIO_END 	W55FA92_IRQ(W55FA92_IRQ(0x100+0xE0))
+#define NR_IRQS        (IRQ_GPIO_END + 1)
+#endif
 
 #endif /* __ASM_ARCH_IRQ_H */
