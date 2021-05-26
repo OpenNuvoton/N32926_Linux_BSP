@@ -20,7 +20,8 @@ extern unsigned int w55fa92_upll_clock, w55fa92_apll_clock, w55fa92_ahb_clock;
 #include "wblib.h"
 PFN_VIDEOIN_CALLBACK (pfnvideoIn_IntHandlerTable)[4]={0};
 #endif
-#define REAL_CHIP
+
+#define REAL_CHIP
 
 /*---------------------------------------------------------------------------------------------------------*/
 /* Function: videoIn_IntHandler                                                                             */
@@ -446,9 +447,9 @@ videoIn_Open(
 		
 	u32Divider = (u32PllClock/2/u32EngFreqKHz)-1;
 #if 0	
-	outp32(REG_CLKDIV4, (inp32(REG_CLKDIV4) & ~VIN0_N) | (u32Divider<<12));	
+	outp32(REG_CLKDIV4, (inp32(REG_CLKDIV4) & ~VIN0_N) | (CHG_APB | (u32Divider<<12)));	
 #else
-	outp32(REG_CLKDIV4, inp32(REG_CLKDIV4) & ~VIN0_N);	/* CAP0 engine clock divider need to be filled with 0 */		
+	outp32(REG_CLKDIV4, (inp32(REG_CLKDIV4) & ~VIN0_N) | CHG_APB);	/* CAP0 engine clock divider need to be filled with 0 */		
 #endif	
 	
 	u32Divider  = u32SenSrc | ((u32Div0<<19) | (u32Div1<<24)) ;	
@@ -491,7 +492,7 @@ videoIn_Close(
 	// 1. Disable IP's interrupt
 	sysDisableInterrupt(IRQ_VIN);	
 #endif
-	// 2. Disable IP¡¦s clock
+	// 2. Disable IP\A1\A6s clock
 	//outp32(REG_AHBCLK, inp32(REG_AHBCLK) & ~VIN_CKE);
 	clk = clk_get(NULL, "cap0");
 	clk_disable(clk);

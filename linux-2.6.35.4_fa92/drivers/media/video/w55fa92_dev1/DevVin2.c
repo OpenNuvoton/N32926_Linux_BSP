@@ -431,9 +431,9 @@ videoIn_Open(
 	printk("Sensor Div1:Div0 = %d:%d\n", u32Div1, u32Div0);
 	u32Divider = (u32PllClock/2/u32EngFreqKHz)-1;
 #if 0		
-	outp32(REG_CLKDIV4, (inp32(REG_CLKDIV4) & ~VIN1_N) | (u32Divider<<27));	
+	outp32(REG_CLKDIV4, (inp32(REG_CLKDIV4) & ~VIN1_N) | (CHG_APB | (u32Divider<<27)));	
 #else
-	outp32(REG_CLKDIV4, inp32(REG_CLKDIV4) & ~VIN1_N);	/* CAP1 engine clock divider is useless */
+	outp32(REG_CLKDIV4, (inp32(REG_CLKDIV4) & ~VIN1_N) | CHG_APB);	/* CAP1 engine clock divider is useless */
 #endif 	
 	
 	u32Divider = u32SenSrc | ((u32Div0<<13) | (u32Div1<<18));
@@ -475,7 +475,7 @@ videoIn_Close(
 	// 1. Disable IP's interrupt
 	sysDisableInterrupt(IRQ_VIN1);	
 #endif
-	// 2. Disable IP¡¦s clock
+	// 2. Disable IP\A1\A6s clock
 	outp32(REG_AHBCLK2, inp32(REG_AHBCLK2) & ~VIN1_CKE);	
 	// 3. Disable Capture pin function 		   							   	
 } // videoIn_Close
