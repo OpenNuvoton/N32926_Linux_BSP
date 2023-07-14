@@ -255,7 +255,7 @@ typedef struct scale_cmd_s {
         #endif
 #endif
 #ifdef	CONFIG_ILITEK_ILI9341_240x320
-#define LCDWIDTH	240 
+#define LCDWIDTH	240
 #define LCDHEIGHT	320
         #ifdef CONFIG_RGBx888_FORMAT
         #define LCDBPP 32
@@ -265,8 +265,18 @@ typedef struct scale_cmd_s {
 #endif
 
 #ifdef	CONFIG_FW050TFT_800x480_24B
-#define LCDWIDTH	800 
+#define LCDWIDTH	800
 #define LCDHEIGHT	480
+        #ifdef CONFIG_RGBx888_FORMAT
+        #define LCDBPP 32
+        #else
+        #define LCDBPP 16
+        #endif
+#endif
+
+#ifdef	CONFIG_ST70IPS_1024x600_24B
+#define LCDWIDTH	1024
+#define LCDHEIGHT	600
         #ifdef CONFIG_RGBx888_FORMAT
         #define LCDBPP 32
         #else

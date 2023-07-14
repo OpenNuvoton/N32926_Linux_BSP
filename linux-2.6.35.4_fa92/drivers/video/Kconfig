@@ -2236,6 +2236,9 @@ choice
 
 	config FW050TFT_800x480_24B
 		bool "FW050TFT 800x480 24 bits LCD support"
+
+	config ST70IPS_1024x600_24B
+		bool "ST70IPS_1024x600 24 bits LCD support"
 		
 #	config AMPIRE_800x480
 #		bool "AMPIRE 800x480 LCD support"
@@ -2252,7 +2255,7 @@ endchoice
 choice
         prompt "Select Video format RGB565 or RGB888"
         default RGB565_FORMAT
-        depends on GIANTPLUS_GPM1006D0_320X240 || ILITEK_ILI9341_240x320 || AMPIRE_800x480_24B || FW050TFT_800x480_24B
+        depends on GIANTPLUS_GPM1006D0_320X240 || ILITEK_ILI9341_240x320 || AMPIRE_800x480_24B || FW050TFT_800x480_24B || ST70IPS_1024x600_24B
         
 	config RGB565_FORMAT
 		bool "Video foramt is RGB565"

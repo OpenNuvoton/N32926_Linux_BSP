@@ -307,6 +307,10 @@ static int w55fa92_osd_function(osd_cmd_t* osd_ptr);
 #include "w55fa92_FW050TFT_800x480_24B.c"
 #endif
 
+#ifdef CONFIG_ST70IPS_1024x600_24B
+#include "w55fa92_ST70IPS_1024x600_24B.c"
+#endif
+
 #if 0
 	#ifdef	CONFIG_SHARP_LQ035Q1DH02_320X240
 	#include "w55fa92_Sharp_LQ035Q1DH02.c"
