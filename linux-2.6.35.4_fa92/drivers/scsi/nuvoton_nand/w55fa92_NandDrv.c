@@ -688,6 +688,10 @@ int fmiSM_ReadID(FMI_SM_INFO_T *pSM, NDISK_T *NDISK_info)
                 NDISK_info->vendor_ID = 0xFF;   // fake vendor_ID
             }
         }
+        else
+        {
+            pSM->bIsCheckECC = TRUE;
+        }
 
         pSM->bIsNandECC4 = FALSE;
         pSM->bIsNandECC8 = FALSE;
@@ -3318,9 +3322,9 @@ static int sicSM_is_page_dirty(int NandPort, int PBA, int page)
     sicSMpread(NandPort, PBA, page, _fmi_pNANDBuffer2);
     byte2 = (inpw(REG_SMRA_0) & 0x00FF0000) >> 16;
     byte3 = (inpw(REG_SMRA_0) & 0xFF000000) >> 24;
-    
-    /* If bit 1 count value of byte 2 and byte 3 is greater than 8, 
-       NAND controller will treat this page as none used page (clean page); 
+
+    /* If bit 1 count value of byte 2 and byte 3 is greater than 8,
+       NAND controller will treat this page as none used page (clean page);
        otherwise, it¡¦s used (dirty page). */
     if (countBit1(byte2) + countBit1(byte3) > 8)
         return NAND_CLEAN_PAGE;
